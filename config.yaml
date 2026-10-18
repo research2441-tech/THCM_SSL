@@ -1,0 +1,46 @@
+experiment:
+  name: thcm_ssl_reference
+  seeds: [11, 23, 37, 41, 53]
+  device: auto
+  # Input records must have verified real timestamps. Never substitute synthetic data for publication results.
+data:
+  input_csv: data.csv
+  text_column: text
+  label_column: label
+  time_column: timestamp
+  platform_column: platform
+  user_column: user_id
+  max_vocab: 30000
+  max_length: 128
+  train_fraction: 0.7
+  validation_fraction: 0.15
+hypergraph:
+  token_span: 8
+  max_edges: 15000
+  max_nodes: 30000
+  alpha: 0.40
+  beta: 0.35
+  gamma: 0.25
+  tau: 3.0 # reference starting value; manuscript does not identify a verified selected tau
+  prune_quantile: 0.20
+  min_support: 1
+model:
+  embedding_dim: 300
+  hidden_dim: 256
+  ssm_layers: 4
+  ssm_state_dim: 64 # effective state is hidden_dim in the reference diagonal scan
+  dropout: 0.1
+  gate_sparsity: 0.01
+  gate_temp_start: 1.0
+  gate_temp_end: 0.1
+continual:
+  retention_coefficient: 0.4
+  prototype_eta: 0.1
+  fisher_max_examples: 30
+training:
+  learning_rate: 0.0002
+  weight_decay: 0.01
+  batch_size: 64
+  epochs: 40
+  patience: 5
+  calibration_fraction_of_validation: 0.5
